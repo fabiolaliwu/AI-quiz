@@ -59,13 +59,23 @@ def is_valid(board, row, col, num):
     """
     
     # TODO: Check if num is in the same row
-    
+    for i in range(9):
+        if board[row][i] == num:
+            return False
     
     # TODO: Check if num is in the same column
-    
-    
+    for i in range(9):
+        if board[i][col] == num:
+            return False
+
     # TODO: Check if num is in the same 3x3 box
+    row_start = (row//3)*3
+    col_start = (col//3)*3
     
+    for i in range(row_start, row_start+3):
+        for j in range(col_start, col_start+3):
+            if board[i][j] == num:
+                return False
     
     return True  # Replace this with your logic
 
@@ -97,15 +107,20 @@ def solve_sudoku(board):
     empty = find_empty_cell(board)
     
     # TODO: If no empty cells, we're done!
-    
+    if not empty:
+        return True
+    row, col = empty
     
     # TODO: Try numbers 1-9
-    
+    for num in range(1, 10):
+        if is_valid(board, row, col, num):
+            board[row][col] = num
+            if solve_sudoku(board):
+                return True
+            board[row][col] = 0
     
     # TODO: If we tried all numbers and none worked, return False
-    
-    
-    pass  # Remove this when you implement the function
+    return False
 
 # Test cases
 if __name__ == "__main__":
